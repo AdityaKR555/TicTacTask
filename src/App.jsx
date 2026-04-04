@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Logo from './components/Logo'
 import Navbar from './components/Navbar'
+import { Outlet } from 'react-router-dom'
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <>
       <Logo />
       <Navbar />
+      <Outlet />
     </>
   )
 }
