@@ -1,60 +1,88 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function AllTasks() {
+  const [content, setContent] = useState("");
+  // const [tasks, addTasks] = useState([]);
+  const { tasks, addTask, toggleTask, deleteTask } = useOutletContext();
 
-    const [content, setContent] = useState("");
-    const [tasks, addTasks] = useState([]);
-
-    const addTask = (e) => {
-        e.preventDefault();
-        if(content.trim() === "") alert("You Cannot Add An Empty Task");
-        else{
-            addTasks(prev => ([...prev, content]));
-        }
-        setContent("");
+  const HandleAddTask = (e) => {
+    e.preventDefault();
+    if (!content.trim()) alert("You Cannot Add An Empty Task");
+    else {
+      addTask(content);
     }
+    setContent("");
+  };
 
-    const deleteTask = (index) => {
-        addTasks(prev => prev.filter((_, i) => i != index))
-    }
+  const HandleDeleteTask = (id) => {
+      const updatedTasks = tasks.filter( task => task.id !== id );
+      deleteTask(updatedTasks);
+  }
 
   return (
-    <div className="flex flex-col items-center mt-6 px-3">
-        {/* input */}
-        <form onSubmit={(e) => addTask(e)}>
-            <input type="text" value={content} onChange={e => setContent(e.target.value)} placeholder='Add Task here...'
-              className="flex-1 bg-cyan-900 text-cyan-100 placeholder-cyan-400 
-                 px-4 py-2 rounded-lg outline-none 
+    <div className="flex flex-col items-center mt-6 px-3 ">
+      {/* input */}
+      <form onSubmit={(e) => HandleAddTask(e)} className="flex gap-4 w-[80%]">
+        <input
+          type="text"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Add Task here..."
+          className="flex-1 bg-cyan-900 placeholder-cyan-400 
+                 p-4 rounded-xl outline-none md:text-lg text-cyan-400 font-bold 
                  focus:ring-2 focus:ring-cyan-400 transition-all duration-200"
-            />
-            <button type='submit' className="bg-cyan-500 hover:bg-cyan-400 text-cyan-950 
-          px-5 py-2 rounded-lg font-semibold 
-          shadow-md shadow-black/30 transition-all duration-200">Add Task</button>
-        </form>
+        />
+        <button
+          type="submit"
+          className="bg-cyan-500 hover:bg-cyan-400 text-cyan-950 
+          p-4 md:text-lg rounded-xl font-bold 
+          shadow-md shadow-black/30 transition-all duration-200"
+        >
+          Add Task
+        </button>
+      </form>
 
-        {/* output */}
+      {/* output */}
 
-        {
-            tasks.length > 0 ? (
-                <div  className="w-full max-w-xl mt-6 flex flex-col gap-3">
-                { 
-                    tasks.map((task, i) => (
-                        <div key={i} className="bg-cyan-900 text-cyan-100 px-4 py-3 rounded-lg 
-              flex justify-between items-center 
+      {tasks.length > 0 ? (
+        <div className="w-[80%] mt-6 flex flex-col gap-3">
+          <p className="text-white text-center md:text-lg">Tasks:</p>
+          {tasks.map((task, i) => (
+            <div
+              key={task.id}
+              className="bg-cyan-900 text-cyan-100 px-4 py-3 rounded-lg 
+              flex justify-between items-center
               shadow-md shadow-black/30 
-              hover:shadow-lg hover:scale-[1.02] transition-all duration-200">
-                            <p className="text-sm md:text-base">{task}</p>
-                            <button onClick={() => deleteTask(i)}>Delete</button>
-                        </div>
-                    ))
-                }
-                </div>
-            ) : (
-                <p className="text-cyan-400 text-center mt-4">No Tasks Yet</p>
-            )
-        }
+              hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+            >
+              <div className="flex gap-2 md:gap-4 items-center justify-center">
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 accent-cyan-500 cursor-pointer"
+                  onChange={() => toggleTask(task.id)}
+                  checked={task.completed}
+                />
+                <p className={task.completed ? "text-sm md:text-xl font-semibold line-through" : "text-sm md:text-xl font-semibold"}>
+                  {task.content}
+                </p>
+              </div>
+              <button
+                onClick={() => HandleDeleteTask(task.id)}
+                className="bg-red-700 text-white font-semibold py-1.5 px-3 rounded-xl hover:bg-red-500"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-cyan-400 text-center mt-5 md:text-lg">
+          No Tasks Yet
+        </p>
+      )}
     </div>
-  )
+  );
 }
 
-export default AllTasks
+export default AllTasks;
