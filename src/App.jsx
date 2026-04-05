@@ -5,6 +5,7 @@ import { Outlet, Routes, Route } from 'react-router-dom'
 import AllTasks from './pages/AllTasks'
 import Game from './pages/Game'
 import CompletedTasks from './pages/CompletedTasks'
+import TasksLayout from './pages/TasksLayout'
 
 
 function App() {
@@ -15,7 +16,10 @@ function App() {
       <Logo />
       <Navbar />
       <Routes>
-        <Route path="/" element={<AllTasks />} />
+        <Route path="/" element={<TasksLayout />} >
+          <Route index element={<AllTasks />} />
+          <Route path="completed" element={<CompletedTasks />} />
+        </Route> 
         <Route path="/game" element={<Game   />} />
       </Routes>
     </>
