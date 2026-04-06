@@ -42,7 +42,7 @@ function AllTasks() {
 
 
   return (
-    <div className="flex flex-col items-center mt-6 px-3 ">
+    <div className="flex flex-col items-center mt-6">
       {/* input */}
       <form onSubmit={(e) => HandleAddTask(e)} className="flex gap-4 w-[80%]">
         <input
@@ -52,13 +52,13 @@ function AllTasks() {
           onChange={(e) => setContent(e.target.value)}
           placeholder="Add Task here..."
           className="flex-1 bg-cyan-900 placeholder-cyan-400 
-                 p-4 rounded-xl outline-none md:text-lg text-cyan-400 font-bold 
+                 px-3 md:p-4 h-14 md:h-auto rounded-xl outline-none text-sm md:text-lg text-cyan-400 font-bold 
                  focus:ring-2 focus:ring-cyan-400 transition-all duration-200"
         />
         <button
           type="submit"
           className="bg-cyan-500 hover:bg-cyan-400 text-cyan-950 
-          p-4 md:text-lg rounded-xl font-bold 
+          px-3 md:p-4 text-sm md:text-lg rounded-xl font-bold
           shadow-md shadow-black/30 transition-all duration-200"
         >
           {btnContent}
@@ -68,13 +68,13 @@ function AllTasks() {
       {/* output */}
 
       {tasks.length > 0 ? (
-        <div className="w-[80%] mt-6 flex flex-col gap-3">
+        <div className="w-full mt-6 flex flex-col gap-3">
           <p className="text-white text-center md:text-lg">Tasks:</p>
           {tasks.map((task, i) => (
             <div
               key={task.id}
               className="bg-cyan-900 text-cyan-100 px-4 py-3 rounded-lg 
-              flex justify-between items-center
+              flex justify-between items-center w-[97%] md:w-[80%] mx-auto
               shadow-md shadow-black/30 
               hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
             >
@@ -91,7 +91,7 @@ function AllTasks() {
               </div>
               <div className="flex gap-2 md:gap-4 items-center justify-center">
                 <button
-                className="bg-cyan-700 text-white font-semibold py-1.5 px-3 rounded-xl hover:bg-cyan-500"
+                className="bg-cyan-700 text-white font-semibold py-1 px-2 md:py-1.5 md:px-3 rounded-xl hover:bg-cyan-500"
                 onClick={() => EditTask(task.id)}
                 >
                   Edit
@@ -99,7 +99,7 @@ function AllTasks() {
 
                 <button
                   onClick={() => HandleDeleteTask(task.id)}
-                  className="bg-red-700 text-white font-semibold py-1.5 px-3 rounded-xl hover:bg-red-500"
+                  className="bg-red-700 text-white font-semibold py-1 px-2 md:py-1.5 md:px-3 rounded-xl hover:bg-red-500"
                   >
                   Delete
                 </button>

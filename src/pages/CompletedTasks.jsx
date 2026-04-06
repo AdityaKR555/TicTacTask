@@ -12,7 +12,7 @@ function CompletedTasks() {
       {completedTasks.length ? (
         completedTasks.map(task => (
           <div key={task.id} className="bg-cyan-900 px-4 py-3 rounded-lg 
-              flex gap-4 items-center mt-6 w-[80%] mx-auto
+              flex gap-4 items-center mt-6 w-[97%] md:w-[80%] mx-auto
               shadow-md shadow-black/30 
               hover:shadow-lg hover:scale-[1.02] transition-all duration-200">
 
