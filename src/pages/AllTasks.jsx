@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 function AllTasks() {
   const [content, setContent] = useState("");
   // const [tasks, addTasks] = useState([]);
-  const { tasks, addTask, toggleTask, deleteTask } = useOutletContext();
+  const { tasks, addTask, toggleTask, updateTask } = useOutletContext();
+  const [editId, setEditId] = useState(null);
+  const editRef = useRef(null);
+
+  const [btnContent, setBtnContent] = useState("Add Task");
 
   const HandleAddTask = (e) => {
     e.preventDefault();
     if (!content.trim()) alert("You Cannot Add An Empty Task");
+
+    else if (editId) {
+      const updatedTasks = tasks.map( task => task.id === editId ? { ...task, content} : task);
+      updateTask(updatedTasks);
+      setBtnContent("Add Task");
+      setEditId(null);
+    }
+
     else {
       addTask(content);
     }
@@ -17,14 +29,24 @@ function AllTasks() {
 
   const HandleDeleteTask = (id) => {
       const updatedTasks = tasks.filter( task => task.id !== id );
-      deleteTask(updatedTasks);
+      updateTask(updatedTasks);
   }
+
+  const EditTask = (id) => {
+    const currentTask = tasks.find( task => task.id == id);
+    setContent(currentTask.content);
+    editRef.current.focus();
+    setBtnContent("Save Changes");
+    setEditId(id);
+  };
+
 
   return (
     <div className="flex flex-col items-center mt-6 px-3 ">
       {/* input */}
       <form onSubmit={(e) => HandleAddTask(e)} className="flex gap-4 w-[80%]">
         <input
+          ref={editRef}
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -39,7 +61,7 @@ function AllTasks() {
           p-4 md:text-lg rounded-xl font-bold 
           shadow-md shadow-black/30 transition-all duration-200"
         >
-          Add Task
+          {btnContent}
         </button>
       </form>
 
@@ -67,12 +89,21 @@ function AllTasks() {
                   {task.content}
                 </p>
               </div>
-              <button
-                onClick={() => HandleDeleteTask(task.id)}
-                className="bg-red-700 text-white font-semibold py-1.5 px-3 rounded-xl hover:bg-red-500"
-              >
-                Delete
-              </button>
+              <div className="flex gap-2 md:gap-4 items-center justify-center">
+                <button
+                className="bg-cyan-700 text-white font-semibold py-1.5 px-3 rounded-xl hover:bg-cyan-500"
+                onClick={() => EditTask(task.id)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => HandleDeleteTask(task.id)}
+                  className="bg-red-700 text-white font-semibold py-1.5 px-3 rounded-xl hover:bg-red-500"
+                  >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

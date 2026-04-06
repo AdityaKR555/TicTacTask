@@ -24,7 +24,7 @@ function CompletedTasks() {
             />
 
             <p className="line-through text-sm md:text-xl font-semibold text-white">
-              {task.content}
+              {task.content}  
             </p>
 
           </div>
